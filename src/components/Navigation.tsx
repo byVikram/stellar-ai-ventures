@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Brain } from "lucide-react";
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("hero");
 
   const navItems = [
     { label: "Solutions", href: "#solutions" },
@@ -11,6 +12,36 @@ const Navigation = () => {
     { label: "About", href: "#about" },
     { label: "Contact", href: "#contact" }
   ];
+
+  // Handle smooth scrolling
+  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace('#', '');
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+    setIsOpen(false);
+  };
+
+  // Track active section
+  useEffect(() => {
+    const handleScroll = () => {
+      const sections = ['hero', 'solutions', 'expertise', 'about', 'contact'];
+      const scrollPosition = window.scrollY + 100;
+
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i]);
+        if (element && element.offsetTop <= scrollPosition) {
+          setActiveSection(sections[i]);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-lg border-b border-border">
@@ -32,7 +63,12 @@ const Navigation = () => {
               <a
                 key={item.label}
                 href={item.href}
-                className="text-foreground hover:text-primary transition-colors font-medium"
+                onClick={(e) => handleNavClick(e, item.href)}
+                className={`transition-colors font-medium ${
+                  activeSection === item.href.replace('#', '') 
+                    ? 'text-primary' 
+                    : 'text-foreground hover:text-primary'
+                }`}
               >
                 {item.label}
               </a>
@@ -66,8 +102,12 @@ const Navigation = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="block text-foreground hover:text-primary transition-colors font-medium py-2"
-                  onClick={() => setIsOpen(false)}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                  className={`block transition-colors font-medium py-2 ${
+                    activeSection === item.href.replace('#', '') 
+                      ? 'text-primary' 
+                      : 'text-foreground hover:text-primary'
+                  }`}
                 >
                   {item.label}
                 </a>

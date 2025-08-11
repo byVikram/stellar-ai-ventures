@@ -2,6 +2,7 @@ import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import ExpertiseSection from "@/components/ExpertiseSection";
 import VerticalSection from "@/components/VerticalSection";
+import AboutSection from "@/components/AboutSection";
 import CTASection from "@/components/CTASection";
 
 const Index = () => {
@@ -9,8 +10,9 @@ const Index = () => {
     <div className="min-h-screen">
       <Navigation />
       <HeroSection />
-      <ExpertiseSection />
       <VerticalSection />
+      <ExpertiseSection />
+      <AboutSection />
       <CTASection />
     </div>
   );
