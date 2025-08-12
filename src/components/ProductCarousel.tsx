@@ -220,19 +220,19 @@ const ProductCarousel = () => {
       <div className="relative z-10 h-full flex items-center">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Content */}
-          <div className="space-y-8 animate-fade-in">
+          <div className="space-y-8">
             {/* Vertical badge */}
-            <Badge className={`${currentProduct.badgeColor} text-sm font-medium px-3 py-1`}>
+            <Badge className={`${currentProduct.badgeColor} text-sm font-medium px-3 py-1 animate-fade-in transform transition-all duration-700`}>
               {currentProduct.vertical}
             </Badge>
 
             {/* Product name */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight animate-fade-in transform transition-all duration-700" style={{ animationDelay: '0.1s' }}>
               {currentProduct.productName}
             </h1>
 
             {/* Value proposition */}
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl">
+            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl animate-fade-in transform transition-all duration-700" style={{ animationDelay: '0.2s' }}>
               {currentProduct.valueProposition}
             </p>
 
@@ -300,72 +300,40 @@ const ProductCarousel = () => {
         </div>
       </div>
 
-      {/* Navigation controls */}
+      {/* Simple navigation controls */}
       <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="flex items-center gap-4 bg-background/80 backdrop-blur-sm rounded-full px-6 py-3 shadow-elegant">
-          {/* Previous button */}
+        <div className="flex items-center gap-3 bg-background/90 backdrop-blur-md rounded-full px-4 py-2 shadow-lg border border-border/50">
+          {/* Play/Pause button */}
           <Button
             variant="ghost"
             size="icon"
-            onClick={prevSlide}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            className="w-8 h-8"
+            onClick={togglePlayPause}
+            className="w-8 h-8 hover:bg-primary/10 transition-colors"
           >
-            <ChevronLeft className="w-4 h-4" />
+            {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
           </Button>
 
-          {/* Slide indicators */}
-          <div className="flex gap-2">
+          {/* Divider */}
+          <div className="w-px h-4 bg-border/60" />
+
+          {/* Owl-style dot indicators */}
+          <div className="flex gap-1.5">
             {productData.map((_, index) => (
               <button
                 key={index}
                 onClick={() => goToSlide(index)}
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  index === currentSlide ? 'bg-primary w-8' : 'bg-muted hover:bg-muted-foreground'
+                className={`rounded-full transition-all duration-500 hover:scale-110 ${
+                  index === currentSlide 
+                    ? 'w-6 h-2 bg-primary shadow-md animate-pulse' 
+                    : 'w-2 h-2 bg-muted hover:bg-muted-foreground/70'
                 }`}
               />
             ))}
           </div>
-
-          {/* Next button */}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={nextSlide}
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-            className="w-8 h-8"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </Button>
-
-          {/* Play/Pause button */}
-          <div className="w-px h-6 bg-border mx-2" />
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={togglePlayPause}
-            className="w-8 h-8"
-          >
-            {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-          </Button>
         </div>
       </div>
-
-      {/* Progress bar */}
-      {isPlaying && !isPaused && (
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-border">
-          <div 
-            className="h-full bg-primary transition-all duration-100 ease-linear"
-            style={{
-              width: `${((currentSlide + 1) / productData.length) * 100}%`
-            }}
-          />
-        </div>
-      )}
     </div>
   );
 };
