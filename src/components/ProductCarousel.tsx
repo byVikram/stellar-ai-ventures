@@ -192,7 +192,8 @@ const ProductCarousel = () => {
     <div className="relative w-full h-full min-h-[600px] overflow-hidden">
       {/* Background gradient for current slide */}
       <div 
-        className={`absolute inset-0 bg-gradient-to-br ${currentProduct.backgroundGradient} transition-all duration-1000 ease-in-out`}
+        className={`absolute inset-0 bg-gradient-to-br ${currentProduct.backgroundGradient} transition-all duration-1000 ease-in-out transform`}
+        key={currentSlide}
       />
 
       {/* Animated background elements */}
@@ -220,19 +221,22 @@ const ProductCarousel = () => {
       <div className="relative z-10 h-full flex items-center">
         <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Content */}
-          <div className="space-y-8">
+          <div 
+            className="space-y-8 animate-fade-in"
+            key={`content-${currentSlide}`}
+          >
             {/* Vertical badge */}
-            <Badge className={`${currentProduct.badgeColor} text-sm font-medium px-3 py-1 animate-fade-in transform transition-all duration-700`}>
+            <Badge className={`${currentProduct.badgeColor} text-sm font-medium px-3 py-1 animate-scale-in transform transition-all duration-700`}>
               {currentProduct.vertical}
             </Badge>
 
             {/* Product name */}
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight animate-fade-in transform transition-all duration-700" style={{ animationDelay: '0.1s' }}>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight animate-fade-in transform transition-all duration-700" style={{ animationDelay: '0.2s' }}>
               {currentProduct.productName}
             </h1>
 
             {/* Value proposition */}
-            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl animate-fade-in transform transition-all duration-700" style={{ animationDelay: '0.2s' }}>
+            <p className="text-xl md:text-2xl text-muted-foreground leading-relaxed max-w-2xl animate-fade-in transform transition-all duration-700" style={{ animationDelay: '0.4s' }}>
               {currentProduct.valueProposition}
             </p>
 
@@ -241,10 +245,10 @@ const ProductCarousel = () => {
               {currentProduct.features.map((feature, index) => (
                 <div 
                   key={index} 
-                  className="flex items-start gap-3 animate-fade-in"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  className="flex items-start gap-3 animate-fade-in transform translate-x-0"
+                  style={{ animationDelay: `${0.6 + (index * 0.15)}s` }}
                 >
-                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 animate-scale-in" style={{ animationDelay: `${0.6 + (index * 0.15)}s` }}>
                     <Check className="w-3 h-3 text-white" />
                   </div>
                   <span className="text-muted-foreground leading-relaxed">{feature}</span>
@@ -253,12 +257,12 @@ const ProductCarousel = () => {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Button variant="hero" size="lg" className="text-lg px-8 py-4">
+            <div className="flex flex-col sm:flex-row gap-4 pt-4 animate-fade-in" style={{ animationDelay: '1.2s' }}>
+              <Button variant="hero" size="lg" className="text-lg px-8 py-4 hover:scale-105 transition-transform duration-200">
                 {currentProduct.primaryCTA}
                 <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
-              <Button variant="outline" size="lg" className="text-lg px-8 py-4">
+              <Button variant="outline" size="lg" className="text-lg px-8 py-4 hover:scale-105 transition-transform duration-200">
                 {currentProduct.secondaryCTA}
                 <Play className="w-4 h-4 ml-2" />
               </Button>
